@@ -1,0 +1,89 @@
+﻿<Window x:Class="proj_.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:proj_"
+        mc:Ignorable="d"
+        Icon="/Resources/Мастер_пол.ico"
+        Title="{Binding WindowTitle}" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+    
+    <Window.Resources>
+        <Style TargetType="ListBoxItem">
+            <Setter Property="Background" Value="#BFD6F6"/>
+            <Setter Property="Margin" Value="10 5 10 5"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="Gray" BorderThickness="2">
+                            <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#405C73"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#405C73"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <DockPanel LastChildFill="True">
+        
+        <!-- Кнопки-->
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Добавить" Click="AddButton_Click"/>
+            <Button Content="Изменить" Click="EditButton_Click"/>
+            <Button Content="Продукция" Click="ProductButton_Click"/>
+        </StackPanel>
+        
+        <!-- Лого -->
+        <DockPanel DockPanel.Dock="Top" LastChildFill="True">
+            <Image Source="/Resources/Мастер_пол.png" Width="90" Height="90" Margin="10 10 0 10"/>
+            <TextBlock Text="Материалы" FontSize="30" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </DockPanel>
+        
+        <!-- Основной список -->
+        <ListBox x:Name="mainListBox" ItemsSource="{Binding DataSource}" SelectedItem="{Binding SelectedItem}" HorizontalContentAlignment="Stretch" Background="White">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderBrush="Gray" BorderThickness="2" Padding="10"> 
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel  Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+                                <TextBlock Text="{Binding Material.MaterialType.MaterialTypeName, StringFormat='\{0} | '}" FontSize="16"/>
+                                <TextBlock Text="{Binding Material.MaterialName, StringFormat='\{0}'}" FontSize="16"/>
+                            </StackPanel>
+
+                            <TextBlock Text="{Binding MaterialAmount, StringFormat='Требуемое количество: {0}'}" Grid.Row="0" Grid.Column="1" FontSize="16" HorizontalAlignment="Right"/>
+
+                            <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Vertical">
+                                <TextBlock Text="{Binding Material.MaterialMinAmount, StringFormat='Минимальное количество: {0}'}"/>
+                                <TextBlock Text="{Binding Material.MaterialStorageAmount, StringFormat='Количество на складе: {0}'}"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Material.MaterialPrice, StringFormat='Цена: {0} р/'}"/>
+                                    <TextBlock Text="{Binding Material.UnitType.UnitTypeName, StringFormat='\{0} | '}"/>
+                                    <TextBlock Text="{Binding Material.MaterialPackAmount, StringFormat='Количество в упаковке: {0}'}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>       
+        </ListBox>
+    </DockPanel>
+</Window>
